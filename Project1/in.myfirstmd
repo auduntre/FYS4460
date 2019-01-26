@@ -11,7 +11,7 @@ create_box 1 simbox # Creates box with 1 type of atoms
 create_atoms 1 box  # Fills box with atoms
 
 mass 1 1.0          # Atoms of type 1 with in Lennard-Jones units
-velocity all create 2.5 87287 dist uniform -2.5 2.5
+velocity all create 2.5 87287 dist uniform
 # Velocity -> temperature 2.5 and seed
 
 pair_style lj/cut 3.0 # Interaction is zero if distance is >3.0 lj
