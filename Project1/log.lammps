@@ -1,5 +1,4 @@
-LAMMPS (9 Nov 2016)
-OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:90)
+LAMMPS (12 Dec 2018)
   using 1 OpenMP thread(s) per MPI task
 # 3D LENNARD-JONES GAS #
 
@@ -16,6 +15,7 @@ Created orthogonal box = (0 0 0) to (73.6806 73.6806 73.6806)
   1 by 1 by 1 MPI processor grid
 create_atoms 1 box  # Fills box with atoms
 Created 4000 atoms
+  Time spent = 0 secs
 
 mass 1 1.0          # Atoms of type 1 with in Lennard-Jones units
 velocity all create 2.5 87287 dist uniform
@@ -34,13 +34,18 @@ dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
 thermo 100          # Log every 100 steps
 run 10000            # Timesteps
 Neighbor list info ...
-  1 neighbor list requests
   update every 1 steps, delay 10 steps, check yes
   max neighbors/atom: 2000, page size: 100000
   master list distance cutoff = 3.3
   ghost atom cutoff = 3.3
-  binsize = 1.65 -> bins = 45 45 45
-Memory usage per processor = 4.46791 Mbytes
+  binsize = 1.65, bins = 45 45 45
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 5.075 | 5.075 | 5.075 Mbytes
 Step Temp E_pair E_mol TotEng Press 
        0          2.5            0            0    3.7490625   0.02499375 
      100    2.5004057 -0.0010269947            0    3.7486439  0.024977429 
@@ -143,20 +148,20 @@ Step Temp E_pair E_mol TotEng Press
     9800    2.5341035 -0.054386171            0    3.7458188  0.025416531 
     9900    2.5352746 -0.056064264            0     3.745897  0.025402093 
    10000    2.5355625 -0.056587496            0    3.7458055  0.025316782 
-Loop time of 14.0343 on 1 procs for 10000 steps with 4000 atoms
+Loop time of 11.9523 on 1 procs for 10000 steps with 4000 atoms
 
-Performance: 307816.199 tau/day, 712.537 timesteps/s
-98.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 361437.437 tau/day, 836.661 timesteps/s
+95.0% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 1.0922     | 1.0922     | 1.0922     |   0.0 |  7.78
-Neigh   | 1.2765     | 1.2765     | 1.2765     |   0.0 |  9.10
-Comm    | 0.21665    | 0.21665    | 0.21665    |   0.0 |  1.54
-Output  | 10.796     | 10.796     | 10.796     |   0.0 | 76.92
-Modify  | 0.52746    | 0.52746    | 0.52746    |   0.0 |  3.76
-Other   |            | 0.1261     |            |       |  0.90
+Pair    | 0.55939    | 0.55939    | 0.55939    |   0.0 |  4.68
+Neigh   | 0.87673    | 0.87673    | 0.87673    |   0.0 |  7.34
+Comm    | 0.10998    | 0.10998    | 0.10998    |   0.0 |  0.92
+Output  | 10.099     | 10.099     | 10.099     |   0.0 | 84.50
+Modify  | 0.24501    | 0.24501    | 0.24501    |   0.0 |  2.05
+Other   |            | 0.06201    |            |       |  0.52
 
 Nlocal:    4000 ave 4000 max 4000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -169,4 +174,4 @@ Total # of neighbors = 3058
 Ave neighs/atom = 0.7645
 Neighbor list builds = 1000
 Dangerous builds = 1000
-Total wall time: 0:00:14
+Total wall time: 0:00:12
