@@ -144,20 +144,20 @@ Step Temp E_pair E_mol TotEng Press
     9800    2.5341035 -0.054386171            0    3.7458188  0.025416531 
     9900    2.5352746 -0.056064264            0     3.745897  0.025402093 
    10000    2.5355625 -0.056587496            0    3.7458055  0.025316782 
-Loop time of 14.4637 on 1 procs for 10000 steps with 4000 atoms
+Loop time of 11.1944 on 1 procs for 10000 steps with 4000 atoms
 
-Performance: 298678.002 tau/day, 691.384 timesteps/s
-98.2% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 385905.802 tau/day, 893.300 timesteps/s
+98.6% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 1.2305     | 1.2305     | 1.2305     |   0.0 |  8.51
-Neigh   | 1.2924     | 1.2924     | 1.2924     |   0.0 |  8.94
-Comm    | 0.23544    | 0.23544    | 0.23544    |   0.0 |  1.63
-Output  | 10.969     | 10.969     | 10.969     |   0.0 | 75.84
-Modify  | 0.59875    | 0.59875    | 0.59875    |   0.0 |  4.14
-Other   |            | 0.1377     |            |       |  0.95
+Pair    | 0.87236    | 0.87236    | 0.87236    |   0.0 |  7.79
+Neigh   | 1.0202     | 1.0202     | 1.0202     |   0.0 |  9.11
+Comm    | 0.17448    | 0.17448    | 0.17448    |   0.0 |  1.56
+Output  | 8.6105     | 8.6105     | 8.6105     |   0.0 | 76.92
+Modify  | 0.41968    | 0.41968    | 0.41968    |   0.0 |  3.75
+Other   |            | 0.09728    |            |       |  0.87
 
 Nlocal:    4000 ave 4000 max 4000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -170,4 +170,4 @@ Total # of neighbors = 3058
 Ave neighs/atom = 0.7645
 Neighbor list builds = 1000
 Dangerous builds = 1000
-Total wall time: 0:00:14
+Total wall time: 0:00:12
