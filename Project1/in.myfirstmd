@@ -20,6 +20,7 @@ pair_coeff 1 1 1.0 1.0 3.0 # Interaction of atoms type 1 with type 1
 
 compute KE all ke
 compute PE all pe
+compute TEMP all temp
 compute PRESS all pressure thermo_temp
 
 fix 1 all nve       # Constant number (n) of type 1 atoms
@@ -28,8 +29,8 @@ fix 1 all nve       # Constant number (n) of type 1 atoms
 
 # Simulation control:
 timestep 0.005
-thermo_style custom pe ke press
-fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS file compute.txt
+thermo_style custom pe ke press temp
+fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS c_TEMP file compute.txt
 dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
 thermo 100          # Log every 100 steps
 run 10000            # Timesteps
