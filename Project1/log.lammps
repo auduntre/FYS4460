@@ -29,6 +29,7 @@ compute KE all ke
 compute PE all pe
 compute TEMP all temp
 compute MSD all msd com yes average yes
+compute RDF all rdf 100 1 1
 compute PRESS all pressure thermo_temp
 
 fix 1 all nve       # Constant number (n) of type 1 atoms
@@ -40,11 +41,13 @@ timestep 0.005
 thermo_style custom pe ke press temp density
 fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS c_TEMP file compute.txt
 fix 3 all ave/time 1 1 1 c_MSD file msd.txt mode vector
+fix 4 all ave/time 1 1 1 c_RDF[*] file rdf.txt mode vector
+
 dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
 thermo 100          # Log every 100 steps
 run 10000           # Timesteps
 Neighbor list info ...
-  1 neighbor list requests
+  2 neighbor list requests
   update every 1 steps, delay 10 steps, check yes
   max neighbors/atom: 2000, page size: 100000
   master list distance cutoff = 3.3
@@ -153,20 +156,20 @@ PotEng KinEng Press Temp Density
  -0.83006577    1.7445661  0.077494227    1.1633349          0.1 
  -0.81333039    1.7274851  0.082641754    1.1519447          0.1 
  -0.81726881    1.7312181  0.082766212     1.154434          0.1 
-Loop time of 31.2005 on 1 procs for 10000 steps with 4000 atoms
+Loop time of 49.2893 on 1 procs for 10000 steps with 4000 atoms
 
-Performance: 138459.482 tau/day, 320.508 timesteps/s
-98.6% CPU use with 1 MPI tasks x 1 OpenMP threads
+Performance: 87645.777 tau/day, 202.884 timesteps/s
+98.2% CPU use with 1 MPI tasks x 1 OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 13.218     | 13.218     | 13.218     |   0.0 | 42.36
-Neigh   | 4.0744     | 4.0744     | 4.0744     |   0.0 | 13.06
-Comm    | 0.46138    | 0.46138    | 0.46138    |   0.0 |  1.48
-Output  | 10.791     | 10.791     | 10.791     |   0.0 | 34.59
-Modify  | 2.4985     | 2.4985     | 2.4985     |   0.0 |  8.01
-Other   |            | 0.1578     |            |       |  0.51
+Pair    | 15.061     | 15.061     | 15.061     |   0.0 | 30.56
+Neigh   | 4.2017     | 4.2017     | 4.2017     |   0.0 |  8.52
+Comm    | 0.50263    | 0.50263    | 0.50263    |   0.0 |  1.02
+Output  | 12.2       | 12.2       | 12.2       |   0.0 | 24.75
+Modify  | 17.145     | 17.145     | 17.145     |   0.0 | 34.78
+Other   |            | 0.1797     |            |       |  0.36
 
 Nlocal:    4000 ave 4000 max 4000 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -179,4 +182,4 @@ Total # of neighbors = 32649
 Ave neighs/atom = 8.16225
 Neighbor list builds = 998
 Dangerous builds = 990
-Total wall time: 0:00:31
+Total wall time: 0:00:49
