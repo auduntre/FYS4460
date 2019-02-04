@@ -28,9 +28,9 @@ fix 1 all nve       # Constant number (n) of type 1 atoms
                     # Constant energy
 
 # Simulation control:
-timestep 0.005
+timestep 0.008
 thermo_style custom pe ke press temp
-fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS c_TEMP file compute.txt
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
+fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS c_TEMP file medium.txt
+dump 1 all custom 10 dump.mediumtimstep id type x y z vx vy vz
 thermo 100          # Log every 100 steps
-run 20000            # Timesteps
+run 12500            # Timesteps
