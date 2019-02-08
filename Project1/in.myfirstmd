@@ -5,13 +5,13 @@ dimension 3
 boundary p p p      # Periodic boundaries
 atom_style atomic   # Simplest complexity of each particle
 
-lattice fcc 0.1   # Face-centered-cubic shape of lattice, density scale
+lattice fcc 0.01   # Face-centered-cubic shape of lattice, density scale
 region simbox block 0 10 0 10 0 10 # Defines region of block
 create_box 1 simbox # Creates box with 1 type of atoms
 create_atoms 1 box  # Fills box with atoms
 
 mass 1 1.0          # Atoms of type 1 with in Lennard-Jones units
-velocity all create 0.69 87287 dist uniform
+velocity all create 2.5 87287   #dist uniform
 # Velocity -> temperature 2.5 and seed
 
 pair_style lj/cut 3.0 # Interaction is zero if distance is >3.0 lj
@@ -22,12 +22,14 @@ compute KE all ke
 compute PE all pe
 compute TEMP all temp
 compute MSD all msd com yes average yes
-compute RDF all rdf 100 1 1
+compute RDF all rdf 20 1 1
 compute PRESS all pressure thermo_temp
 
 fix 1 all nve       # Constant number (n) of type 1 atoms
                     # Constant volume of simbox
                     # Constant energy
+
+fix 5 all temp/berendsen 2.5 2.5 1.0
 
 # Simulation control:
 timestep 0.005
@@ -35,6 +37,7 @@ thermo_style custom pe ke press temp density
 fix 2 all ave/time 1 1 1 c_KE c_PE c_PRESS c_TEMP file compute.txt
 fix 3 all ave/time 1 1 1 c_MSD file msd.txt mode vector
 fix 4 all ave/time 1 1 1 c_RDF[*] file rdf.txt mode vector
+
 
 dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
 thermo 100          # Log every 100 steps

@@ -1,0 +1,61 @@
+# run this on multiple partitions as
+# mpirun -np 3 lmp_g++ -partition 3x1 -in in.tad
+units metal
+atom_style atomic
+atom_modify map array
+boundary p p p
+atom_modify sort 0 0.0
+
+# temperature
+variable myTemp equal 600.0
+
+# diamond unit cell
+variable myL equal 4
+variable myscale equal 1.3
+
+variable a equal 5.431*${myscale}
+lattice custom $a &
+a1 1.0 0.0 0.0 &
+a2 0.0 1.0 0.0 &
+a3 0.0 0.0 1.0 &
+basis 0.0 0.0 0.0 &
+basis 0.0 0.5 0.5 &
+basis 0.5 0.0 0.5 &
+basis 0.5 0.5 0.0 &
+basis 0.25 0.25 0.25 &
+basis 0.25 0.75 0.75 &
+basis 0.75 0.25 0.75 &
+basis 0.75 0.75 0.25
+
+region myreg block 0 ${myL} &
+0 ${myL} &
+0 ${myL}
+
+create_box 1 myreg
+create_atoms 1 region myreg
+
+mass 1 28.06
+group Si type 1
+velocity all create ${myTemp} 5287286 mom yes rot yes dist gaussian
+
+pair_style sw
+pair_coeff * * Si.sw Si
+neighbor 1.0 bin
+neigh_modify every 1 delay 10 check yes
+timestep 1.0e-3
+
+compute TEMP all temp
+compute MSD all msd com yes average yes
+
+#fix 2 all temp/berendsen ${myTemp} ${myTemp} 0.001
+fix 1 all nve
+
+# Run simulation
+thermo 10
+
+fix 3 all ave/time 1 1 1 c_TEMP file compute_si.txt
+fix 4 all ave/time 1 1 1 c_MSD file msd_si.txt mode vector
+
+
+dump 1 all custom 10 dump.lammpstrj_si id type x y z vx vy vz
+run 10000
