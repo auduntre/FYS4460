@@ -1,0 +1,39 @@
+# Looping over several temps
+label tloop
+variable t index 0.1 0.2 0.3 0.4 0.5 0.6 0.7 1.0 #1.25 1.5 1.75 2.0 2.25 2.5 3.0
+label rholoop
+variable r index 0.01
+
+units lj            # Lennard-Jones units
+dimension 3
+boundary p p p      # Periodic boundaries
+atom_style atomic   # Simplest complexity of each particle
+
+lattice fcc 0.2   # Face-centered-cubic shape of lattice, density scale
+region simbox block 0 10 0 10 0 10 # Defines region of block
+create_box 1 simbox # Creates box with 1 type of atoms
+create_atoms 1 box  # Fills box with atoms
+
+mass 1 1.0          # Atoms of type 1 with in Lennard-Jones units
+velocity all create $t 87287   #dist uniform
+# Velocity -> temperature $t and seed
+
+pair_style lj/cut 3.0 # Interaction is zero if distance is >3.0 lj
+pair_coeff 1 1 1.0 1.0 3.0 # Interaction of atoms type 1 with type 1
+# with 1.0 times simga, 1.0 times epsilon value and cutoff 3.0
+
+fix 1 all nve
+
+compute TEMP all temp
+compute PRESS all pressure thermo_temp
+
+fix 2 all ave/time 1 1 1 c_PRESS c_TEMP file compute_t$t.txt
+
+thermo 100
+run 10000
+
+clear
+next r
+jump SELF rholoop
+next t
+jump SELF tloop

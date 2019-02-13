@@ -1,0 +1,11 @@
+LAMMPS (9 Nov 2016)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:90)
+  using 1 OpenMP thread(s) per MPI task
+# Looping over several temps
+label tloop
+variable t index 0.1 0.2
+label rholoop
+variable r index 0.0015 0.0030
+log log.T_$t_rho_$r
+log log.T_0.1_rho_$r
+log log.T_0.1_rho_0.0015

@@ -29,7 +29,7 @@ fix 1 all nve       # Constant number (n) of type 1 atoms
                     # Constant volume of simbox
                     # Constant energy
 
-fix 5 all temp/berendsen 2.5 2.5 1.0
+#fix 5 all temp/berendsen 2.5 1.5 1.0
 
 # Simulation control:
 timestep 0.005
@@ -39,6 +39,6 @@ fix 3 all ave/time 1 1 1 c_MSD file msd.txt mode vector
 fix 4 all ave/time 1 1 1 c_RDF[*] file rdf.txt mode vector
 
 
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
+dump 1 all custom 100 dump.lammpstrj id type x y z vx vy vz
 thermo 100          # Log every 100 steps
 run 10000           # Timesteps
