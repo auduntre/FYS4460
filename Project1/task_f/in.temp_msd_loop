@@ -7,7 +7,7 @@ dimension 3
 boundary p p p      # Periodic boundaries
 atom_style atomic   # Simplest complexity of each particle
 
-lattice fcc 0.1   # Face-centered-cubic shape of lattice, density scale
+lattice fcc 0.8   # Face-centered-cubic shape of lattice, density scale
 region simbox block 0 10 0 10 0 10 # Defines region of block
 create_box 1 simbox # Creates box with 1 type of atoms
 create_atoms 1 box  # Fills box with atoms
