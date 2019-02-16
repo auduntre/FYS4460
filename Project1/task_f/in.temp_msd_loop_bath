@@ -25,13 +25,13 @@ pair_coeff 1 1 1.0 1.0 3.0 # Interaction of atoms type 1 with type 1
 # with 1.0 times simga, 1.0 times epsilon value and cutoff 3.0
 
 fix 1 all nve
-#fix 2 all temp/berendsen v_tbath 1.0 1.0
+fix 2 all temp/berendsen v_tbath 1.0 1.0
 
 compute TEMP all temp
 compute MSD all msd com yes average yes
 
-fix 3 all ave/time 1 1 1 c_TEMP file msd_t$t.txt
-fix 4 all ave/time 1 1 1 c_MSD file msd_$t.txt mode vector
+fix 3 all ave/time 1 1 1 c_TEMP file msd_bath_t$t.txt
+fix 4 all ave/time 1 1 1 c_MSD file msd_bath_$t.txt mode vector
 
 thermo 100
 
