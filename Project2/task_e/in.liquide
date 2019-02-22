@@ -26,18 +26,20 @@ variable sphere_z equal random(0.0,33.6,23444)
 
 region sphere_cut_${idx} sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side in
 group sphere_atoms region sphere_cut_${idx}
-region sphere_cut_${idx} delete
 
 next idx
 jump SELF rloop
 
+region pore_region union 20 sphere_cut_1 sphere_cut_2 sphere_cut_3 sphere_cut_4 sphere_cut_5 sphere_cut_6 sphere_cut_7 sphere_cut_8 sphere_cut_9 sphere_cut_10 sphere_cut_11 sphere_cut_12 sphere_cut_13 sphere_cut_14 sphere_cut_15 sphere_cut_16 sphere_cut_17 sphere_cut_18 sphere_cut_19 sphere_cut_20 units box side out
+
 group pores subtract all sphere_atoms
 set group pores type 2
+delete_atoms porosity pore_region 0.5 87287
 
 ###################### Thermalization Part ################
-velocity pores create 1.05 87287
+velocity pores create 1.5 87287
 fix 1 pores nve
-fix 2 pores temp/berendsen 1.05 1.05 0.1
+fix 2 pores temp/berendsen 1.5 1.5 0.1
 
 thermo 10
 run 300
@@ -52,8 +54,10 @@ variable g atom gmask(pores)
 
 compute TEMP pores temp
 compute TEMPsphere sphere_atoms temp
+compute PPA pores stress/atom TEMP
 
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+
+dump 1 pores custom 10 dump.lammpstrj id type x y z v_g c_PPA[1] c_PPA[2] c_PPA[3] 
 thermo_style custom step temp c_TEMP c_TEMPsphere
 thermo 10
 run 1000

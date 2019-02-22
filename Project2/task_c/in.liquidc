@@ -32,6 +32,7 @@ next idx
 jump SELF rloop
 
 group pores subtract all sphere_atoms
+
 set group pores type 2
 
 ###################### Thermalization Part ################
