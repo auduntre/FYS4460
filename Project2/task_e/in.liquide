@@ -58,7 +58,7 @@ compute PPA pores stress/atom TEMP
 compute MSD pores msd com yes average yes
 compute VOR pores voronoi/atom
 
-dump 1 pores custom 10 dump.lammpstrj id type x y z fx fy fz v_g c_PPA[1] c_PPA[2] c_PPA[3] c_VOR[1]
+dump 1 all custom 10 dump.lammpstrj id type x y z fx fy fz v_g c_PPA[1] c_PPA[2] c_PPA[3] c_VOR[1]
 fix 4 all ave/time 1 1 1 c_MSD file msd.txt mode vector
 fix 5 all ave/time 1 1 1 c_TEMP file temp.txt
 thermo_style custom step temp c_TEMP c_TEMPsphere
