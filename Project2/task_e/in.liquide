@@ -53,7 +53,7 @@ fix 3 pores nve
 variable g atom gmask(pores)
 
 compute TEMP pores temp
-compute PRESS pores temp
+compute PRESS all pressure TEMP
 compute TEMPsphere sphere_atoms temp
 compute PPA pores stress/atom TEMP
 compute MSD pores msd com yes average yes
