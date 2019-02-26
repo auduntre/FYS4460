@@ -19,10 +19,10 @@ pair_coeff * * 1.0 1.0 3.0
 label rloop
 variable idx loop 1 20
 
-variable sphere_radius equal random(5.87,8.805,11111)
-variable sphere_x equal random(0.0,33.6,12345)
-variable sphere_y equal random(0.0,33.6,56789)
-variable sphere_z equal random(0.0,33.6,12345)
+variable sphere_radius equal random(5.87,8.805,97342)
+variable sphere_x equal random(0.0,33.6,19842)
+variable sphere_y equal random(0.0,33.6,23950)
+variable sphere_z equal random(0.0,33.6,25398)
 
 region sphere_cut_${idx} sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side in
 group sphere_atoms region sphere_cut_${idx}
@@ -53,14 +53,16 @@ fix 3 pores nve
 variable g atom gmask(pores)
 
 compute TEMP pores temp
+compute PRESS pores temp
 compute TEMPsphere sphere_atoms temp
 compute PPA pores stress/atom TEMP
 compute MSD pores msd com yes average yes
 compute VOR pores voronoi/atom
 
-dump 1 all custom 10 dump.lammpstrj id type x y z fx fy fz v_g c_PPA[1] c_PPA[2] c_PPA[3] c_VOR[1]
+dump 1 pores custom 10 dump.lammpstrj id type x y z fx fy fz v_g c_PPA[1] c_PPA[2] c_PPA[3] c_VOR[1]
 fix 4 all ave/time 1 1 1 c_MSD file msd.txt mode vector
 fix 5 all ave/time 1 1 1 c_TEMP file temp.txt
+fix 6 all ave/time 1 1 1 c_PRESS file press.txt
 thermo_style custom step temp c_TEMP c_TEMPsphere
 thermo 10
 run 2000
