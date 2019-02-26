@@ -12,7 +12,7 @@ create_atoms 1 box
 mass 1 1.0
 mass 2 1.0
 
-pair_style lj/cut/omp 3.0
+pair_style lj/cut 3.0
 pair_coeff * * 1.0 1.0 3.0
 
 region cylinder_cut cylinder x 16.8 16.8 5.87 EDGE EDGE units box side in
@@ -24,28 +24,25 @@ group stationary_atoms region cylinder_outside
 set group cylinder_atoms type 2
 set group stationary_atoms type 1
 
+delete_atoms porosity cylinder_cut 0.5 25001
+
 
 ###################### Thermalization Part ################
-velocity cylinder_atoms create 0.851 87287
+velocity cylinder_atoms create 1.5 87287
 fix 1 cylinder_atoms nve
-
-#fix 2 cylinder_atoms temp/berendsen 0.851 0.851 0.1
-fix 3 cylinder_atoms addforce 1.0 0.0 0.0
 
 
 thermo 10
-run 2000
+run 3000
 
 print "--------------  THERMALIZATION DONE ----------------"
 ###################### Main run ###########################
 #unfix 1
 
+fix 3 cylinder_atoms addforce 0.1 0.0 0.0
 
-
-compute TEMP cylinder_atoms temp
-
-dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz
-thermo_style custom step temp c_TEMP
+variable g atom gmask(cylinder_atoms)
+dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 
 thermo 10
-run 2000
+run 20000
