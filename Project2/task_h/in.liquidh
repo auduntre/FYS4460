@@ -44,5 +44,5 @@ fix 3 cylinder_atoms addforce 0.1 0.0 0.0
 variable g atom gmask(cylinder_atoms)
 dump 1 all custom 10 dump.lammpstrj id type x y z vx vy vz v_g
 
-thermo 10
+thermo 100
 run 20000
