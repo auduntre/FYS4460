@@ -1,5 +1,4 @@
 # 3d Lennard-Jones liquid
-
 units lj
 dimension 3
 boundary p p p
@@ -13,63 +12,41 @@ create_atoms 1 box
 mass 1 1.0
 mass 2 1.0
 
-pair_style lj/cut/omp 3.0
+pair_style lj/cut 3.0
 pair_coeff * * 1.0 1.0 3.0
 
-variable sphere_radius equal random(5.87,8.805,97342)
-variable sphere_x equal random(0.0,33.6,19842)
-variable sphere_y equal random(0.0,33.6,23950)
-variable sphere_z equal random(0.0,33.6,25398)
+region cylinder_cut cylinder x 16.8 16.8 ${radius} EDGE EDGE units box side in
+region cylinder_outside cylinder x 16.8 16.8 ${radius} EDGE EDGE units box side out
 
-region sphere_cut_1 sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side in
-region pore_region_1 sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side out
+group cylinder_atoms region cylinder_cut
+group stationary_atoms region cylinder_outside
 
-label rloop
-variable idx loop 2 ${sphere_count}
+set group cylinder_atoms type 2
+set group stationary_atoms type 1
 
-variable idxm equal ${idx}-1
-
-variable sphere_radius equal random(5.87,8.805,97342)
-variable sphere_x equal random(0.0,33.6,19842)
-variable sphere_y equal random(0.0,33.6,23950)
-variable sphere_z equal random(0.0,33.6,25398)
-
-region sphere_cut_${idx} sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side in
-region pore_region_tmp_${idx} sphere ${sphere_x} ${sphere_y} ${sphere_z} ${sphere_radius} units box side out
-region pore_region_${idx} union 2 pore_region_${idxm} pore_region_tmp_${idx}
-
-group sphere_atoms region sphere_cut_${idx}
-
-next idx
-jump SELF rloop
-
-
-group pores subtract all sphere_atoms
-set group pores type 2
-delete_atoms porosity pore_region_${sphere_count} 0.5 87287
+delete_atoms porosity cylinder_cut 0.5 25321
 
 ###################### Thermalization Part ################
-velocity pores create 1.5 87287
-fix 1 pores nve
-fix 2 pores temp/berendsen 1.5 1.5 0.1
+velocity all create 1.5 87287
+fix 1 cylinder_atoms nve 
+fix 2 cylinder_atoms temp/berendsen 1.5 1.5 0.1
+
+variable g atom gmask(cylinder_atoms)
+dump 1 cylinder_atoms custom 10 dump.lammpstrj id type x y z vx vy vz v_g
+
+thermo 100
+run 100000
 
 thermo 10
-run 1000
+run 5000
 
+print "--------------  THERMALIZATION DONE ----------------"
 ###################### Main run ###########################
 
-unfix 1
-unfix 2
+fix 3 cylinder_atoms addforce 0.1 0.0 0.0
 
-fix 3 pores nve
-fix 4 pores addforce 0.1 0.0 0.0
+variable g atom gmask(cylinder_atoms)
+dump 1 cylinder_atoms custom 100 dump.lammpstrj_${radius} id type x y z vx vy vz
 
-variable g atom gmask(pores)
-
-compute TEMP pores temp
-compute TEMPsphere sphere_atoms temp
-
-dump 1 pores custom 100 dump.lammpstrj_${sphere_count} id type x y z v_g 
-thermo_style custom step temp c_TEMP c_TEMPsphere
 thermo 10
-run 100000
+run 50000

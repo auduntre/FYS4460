@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for ((i=5; i<=40; i+=5))
+for ((i=4; i<=24; i+=4))
 do
-    mpirun -n 4 lmp -sf omp -pk omp 1 -in in.liquidi -var sphere_count $i
+    mpirun -n 4 lmp -sf omp -pk omp 1 -in in.liquidi -var radius $i
 done
