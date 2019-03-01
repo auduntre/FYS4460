@@ -69,8 +69,7 @@ variable g atom gmask(pores)
 compute TEMP pores temp
 compute TEMPsphere sphere_atoms temp
 
-dump 1 all custom 50 dump.lammpstrj_${sphere_count} id type x y z v_g 
-fix 5 all ave/time 1 1 1 c_TEMP file temp.txt
+dump 1 pores custom 100 dump.lammpstrj_${sphere_count} id type x y z v_g 
 thermo_style custom step temp c_TEMP c_TEMPsphere
 thermo 10
-run 10000
+run 100000
