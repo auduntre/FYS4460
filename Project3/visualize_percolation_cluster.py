@@ -1,4 +1,6 @@
 from scipy.ndimage.measurements import label
+from skimage.color import label2rgb	
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -16,6 +18,16 @@ class Percolation_Cluster:
 	def get_labels(self	):
 		label_array, number = label(self.z)
 		return label_array, number
+
+	def visualize_label(self):
+		label_array, number = self.get_labels()
+		label_img = label2rgb(label_array)
+		
+		plt.imshow(label_img)
+		plt.colorbar()
+		plt.show()
+
+		return label_img
 
 
 def visualize_percolation_cluster(p, L):
