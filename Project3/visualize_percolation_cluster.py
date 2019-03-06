@@ -11,23 +11,26 @@ class Percolation_Cluster:
 		self.L = L
 		self.r = np.random.rand(L, L)
 		self.z = self.r < p
+		self.label_array, self.number = label(self.z)
+
 
 	def visualize(self):
 		plot = plt.imshow(self.z)
 		plt.show()
 
-	def get_labels(self	):
-		label_array, number = label(self.z)
-		return label_array, number
+	def get_labels(self):
+		return self.label_array, self.number
 
 	def visualize_label(self):
-		label_array, number = self.get_labels()
-		label_img = label2rgb(label_array, bg_label=0, bg_color=[0.3	, 0.3, 0.3])
-		
+		label_img = label2rgb(self.label_array, bg_label=0, bg_color=[0.3, 0.3, 0.3])
 		plt.imshow(label_img)
 		plt.show()
 		return label_img
 
+	def region_area(self):
+		regions_info = regionprops(self.label_array)
+		regions_area = [regions_info[i]['area'] for i in range(len(regions_info))]
+		return regions_area
 
 def visualize_percolation_cluster(p, L):
 	pc = Percolation_Cluster(p, L)
