@@ -21,12 +21,10 @@ class Percolation_Cluster:
 
 	def visualize_label(self):
 		label_array, number = self.get_labels()
-		label_img = label2rgb(label_array)
+		label_img = label2rgb(label_array, bg_label=0, bg_color=[1, 1, 1])
 		
 		plt.imshow(label_img)
-		plt.colorbar()
 		plt.show()
-
 		return label_img
 
 
