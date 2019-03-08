@@ -11,7 +11,7 @@ class Percolation_Cluster:
 
     def __init__(self, p, L):
         """ Creates the percolation matrix z. """
-	    self.p = p
+        self.p = p
         self.L = L
         self.r = np.random.rand(L, L)
         self.z = self.r < p
@@ -46,10 +46,20 @@ class Percolation_Cluster:
         return label_img
 
     def region_area(self):
-        """ Calculates and returns the area of all the clusters. """
+        """ Calculates and returns the area of all the clusters."""
         regions_info = regionprops(self.label_array)
-        regions_area = [regions_info[i]['area'] for i in range(len(regions_info))]
-        return regions_area
+        region_areas = [regions_info[i]['area'] for i in range(len(regions_info))]
+        return regions_areas
+
+    def region_bbox(self):
+        """ Calculates and returns the bbox of all the clusters. """
+        regions_info = regionprops(self.label_array)
+        region_bboxs = [regions_info[i]['bbox'] for i in range(len(regions_info))]
+        return region_bboxs
+
+    def big_P(self):
+        bboxs = self.region_bbox()
+        print(bboxs)
 
 
 def visualize_percolation_cluster(p, L):
