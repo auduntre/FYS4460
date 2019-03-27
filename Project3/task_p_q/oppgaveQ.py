@@ -72,7 +72,7 @@ figure(figsize=(12, 8))
 
 with sns.color_palette("husl"): 
     for L in Ler:
-        plot(per-p_c,Her*L**(Dscer-2), label= "L={}".format(L))
+        plot(per-p_c, Her*L**(Dscer-2), label= "L={}".format(L))
 
 xlabel(r"$p-p_c$")
 ylabel(r"$P_{sc}$")
