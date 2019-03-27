@@ -1,16 +1,26 @@
 from scipy.ndimage import measurements
 from scipy.stats import linregress
-from walk import walk
 from pylab import *
 
-Ler = array([i for i in range(50,301,50)])
-simulations = 100
-p_c = 0.59275
-per = array([p_c+0.01*i for i in range(20)])
-Dscer= zeros(len(per))
-Her= zeros(len(per))
+try:
+    from walk import walk
+except ImportError as ie:
+    print "Get the walk module from the course resources"
+    raise ie
 
-mass_array = zeros((len(per),len(Ler)))
+import seaborn as sns
+
+sns.set()
+sns.set_context("poster")
+
+Ler = array([i for i in range(50, 301, 50)])
+simulations = 1000
+p_c = 0.59275
+per = array([p_c + 0.01*i for i in range(20)])
+Dscer = zeros(len(per))
+Her = zeros(len(per))
+
+mass_array = zeros((len(per), len(Ler)))
 for j, p in enumerate(per):
     for i, L in enumerate(Ler):
         mass_zzz = 0 
@@ -19,15 +29,15 @@ for j, p in enumerate(per):
             ncount=0
             while (len(perc)==0):
                 ncount = ncount + 1
-                if (ncount >100):
-                print "Couldn't make percolation cluster..."
-                break
+                if (ncount > 100):
+                    print "Couldn't make percolation cluster..."
+                    break
                 
-                z=rand(L,L)<p
+                z = rand(L,L) < p
                 lw,num = measurements.label(z)
                 perc_x = intersect1d(lw[0,:],lw[-1,:])
                 perc = perc_x[where(perc_x > 0)]
-             #   print ncount
+                #print ncount
 
             if len(perc) > 0:
                 labelList = arange(num + 1)
@@ -39,31 +49,33 @@ for j, p in enumerate(per):
                 zzz = l*r
                 mass_zzz += count_nonzero(zzz)
                 
-        print float(mass_zzz)/simulations
-        mass_array[j, i]= float(mass_zzz)/simulations
+        print float(mass_zzz) / simulations
+        mass_array[j, i] = float(mass_zzz) / simulations
 
     print mass_array 
-    log_Ler= log(Ler)
-    log_mass_array= log(mass_array[j])
+    log_Ler = log(Ler)
+    log_mass_array = log(mass_array[j])
     Dsc, H , _,_,_= linregress(log_Ler,log_mass_array)
     Dscer[j] = Dsc
     Her[j] = exp(H)
     
 print Dscer
-    
-figure()
-plot(Ler,mass_array[0], "o", linewidth= 3, markersize= 10)
-plot(Ler, Her[0]*Ler**Dscer[0], label="linear reg of L^Dsc, p={}".format(p_c))
+figure(figsize=(12, 8))
 
-xlabel("L")
+with sns.color_palette("husl"): 
+    plot(Ler, Her[0]*Ler**Dscer[0], label="linear reg of L^Dsc, p={}".format(per[0]))
+    plot(Ler,mass_array[0], "o", linewidth=3, markersize=10)
+
+xlabel("$L$")
 ylabel("Mass of singly connected bonds")
 legend()
-figure()
+figure(figsize=(12, 8))
 
-for L in Ler:
-    plot(per-p_c,Her*L**(Dscer-2), label= "L={}".format(L))
+with sns.color_palette("PuBuGn_d"): 
+    for L in Ler:
+        plot(per-p_c,Her*L**(Dscer-2), label= "L={}".format(L))
 
-xlabel("p-pc")
-ylabel("Psc")
+xlabel(r"$p-p_c$")
+ylabel(r"$P_{sc}$")
 legend()
 show()
