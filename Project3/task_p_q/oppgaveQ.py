@@ -62,16 +62,15 @@ for j, p in enumerate(per):
 print Dscer
 figure(figsize=(12, 8))
 
-with sns.color_palette("husl"): 
-    plot(Ler, Her[0]*Ler**Dscer[0], label="linear reg of L^Dsc, p={}".format(per[0]))
-    plot(Ler,mass_array[0], "o", linewidth=3, markersize=10)
+plot(Ler, Her[0]*Ler**Dscer[0], label="linear reg of L^Dsc, p={}".format(per[0]))
+plot(Ler,mass_array[0], "o", linewidth=3, markersize=10)
 
 xlabel("$L$")
 ylabel("Mass of singly connected bonds")
 legend()
 figure(figsize=(12, 8))
 
-with sns.color_palette("PuBuGn_d"): 
+with sns.color_palette("husl"): 
     for L in Ler:
         plot(per-p_c,Her*L**(Dscer-2), label= "L={}".format(L))
 
