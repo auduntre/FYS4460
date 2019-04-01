@@ -2,7 +2,7 @@ from pylab import *
 from scipy.ndimage import measurements
 
 
-L = 100 # system size
+L = 50 # system size
 p = linspace(0,0.7,71)
 perc = 0 # flag to signal if other end is reached
 nbetween = 1
@@ -27,10 +27,12 @@ while ((nstop==0) and (nstep<nend)):
 	pcluster = pcluster + cluster.astype(float) 
 	#print pcluster
 	
-	#if (nstep % nbetween==0):
-	#	imshow(pcluster)
-	#	colorbar()
-	#	show()
+	if (nstep % nbetween==0):
+		imshow(pcluster[pcluster>0])
+		colorbar()
+		draw()
+		pause(.01)
+		close()
 	
 	# Check if it has reached the right hand side
 	rightside = lw[:,-1] 
@@ -40,7 +42,8 @@ while ((nstop==0) and (nstep<nend)):
 	if len(span)>0: 
 		nstop = 1  # spanning end
 
+
 print p0
-im = imshow(pcluster, animated=True, cmap=cm.Set3)
+im = imshow(pcluster[pcluster > 0], animated=True)
 colorbar()
 show()
