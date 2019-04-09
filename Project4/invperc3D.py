@@ -3,9 +3,9 @@ import numpy as np
 
 
 def std_case():
-    L = 30
+    L = 100
     MCCs = 1000
-    p = np.linspace(0.0, 0.7, 71)
+    p = np.linspace(0.0, 0.4, 41)
     return p, L, MCCs
 
 
@@ -60,8 +60,13 @@ def main(plot_it=False):
 
     if plot_it:
         import matplotlib.pyplot as plt
-
-        pis = [1, 2, 3, 4, 5, 6]
+        
+        start = 0.05
+        end = 0.30
+        N = int((end - start) / start)
+    
+        values = np.linspace(start, end, N + 1)
+        pis = np.argwhere(np.in1d(p, values)).flatten()
 
         for pi in pis:
             p_hist, n_hist = np.histogram(Ns[pi, :], density=True)
@@ -76,4 +81,4 @@ def main(plot_it=False):
 
 
 if __name__ == "__main__":
-    main(plot_it=False)
+    main(plot_it=True)
