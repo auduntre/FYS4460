@@ -4,7 +4,7 @@ import numpy as np
 
 def std_case():
     L = 100
-    MCCs = 1000
+    MCCs = 10
     p = np.linspace(0.0, 0.4, 41)
     return p, L, MCCs
 
@@ -52,7 +52,7 @@ def inv_perc_sim(p, L, MCCs):
     return Ns, pcs
 
 
-def main(plot_it=False):
+def main(plot_it=False, save_it=False):
     p, L, M = std_case()
     Ns, pcs = inv_perc_sim(p, L, M)
     print(f"mean(Ns[1, :]) = {Ns[1, :].mean()}")
@@ -79,6 +79,9 @@ def main(plot_it=False):
             plt.xlabel("Number of sites invaded")
             plt.show()
 
+    if save_it:
+        np.save("Ns_serial.npy", Ns)
+
 
 if __name__ == "__main__":
-    main(plot_it=True)
+    main(plot_it=False, save_it=False)
