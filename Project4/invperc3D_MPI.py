@@ -3,7 +3,7 @@ from mpi4py import MPI
 import numpy as np
 
 
-def main(plot_it=False):
+def main_mpi(plot_it=False, save_it=False):
     comm = MPI.COMM_WORLD
     mpi_rank = comm.Get_rank()
     mpi_size = comm.Get_size()
@@ -26,9 +26,10 @@ def main(plot_it=False):
         recvline = np.empty(M)
 
     comm.Reduce(pcs, pcs_sum, op=MPI.SUM, root=master)
-    
+    Ms = np.array(comm.gather(M_rank, root=master))
+
     for i in range(len(p)):
-        comm.Gather(Ns[i, :], recvline, root=master)
+        comm.Gatherv(Ns[i, :], (recvline, Ms), root=master)
         
         if mpi_rank == master:
             Ns_total[i, :] = recvline
@@ -54,11 +55,15 @@ def main(plot_it=False):
                 plt.hist(Ns_total[pi, :], density=True)
                 plt.plot(0.5*(n_hist[1:] + n_hist[:-1]), p_hist, 'r-')
 
-                plt.title(f"Prob_pres = {p[pi]:.2f}")
+                plt.title(f"Prob_pres = {p[pi]:.2f}, L = {L}, MCCs = {M}")
                 plt.ylabel("Probability for number of sites invaded")
                 plt.xlabel("Number of sites invaded")
+                plt.savefig(f"dist_p{p[pi]:.2f}.png")
                 plt.show()
+
+        if save_it:
+            np.save("Ns_parallel.npy", Ns_total)
 
 
 if __name__ == "__main__":
-    main(plot_it=False)
+    main_mpi(plot_it=True, save_it=False)

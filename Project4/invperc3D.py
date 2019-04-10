@@ -4,7 +4,7 @@ import numpy as np
 
 def std_case():
     L = 100
-    MCCs = 10
+    MCCs = 10000
     p = np.linspace(0.0, 0.4, 41)
     return p, L, MCCs
 
