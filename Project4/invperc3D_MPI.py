@@ -1,9 +1,9 @@
-from invperc3D import std_case, inv_perc_sim
+from invperc3D import std_case, inv_perc_sim, inv_perc_sim_corner
 from mpi4py import MPI
 import numpy as np
 
 
-def main_mpi(plot_it=False, save_it=False):
+def main_mpi(plot_it=False, save_it=False, ip_sim_type=inv_perc_sim):
     comm = MPI.COMM_WORLD
     mpi_rank = comm.Get_rank()
     mpi_size = comm.Get_size()
@@ -15,7 +15,7 @@ def main_mpi(plot_it=False, save_it=False):
     if mpi_rank == master:
         M_rank += M % mpi_size
     
-    Ns, pcs = inv_perc_sim(p, L, M_rank)
+    Ns, pcs = ip_sim_type(p, L, M_rank)
     pcs_sum = None
     Ns_total = None
     recvline = None
@@ -42,6 +42,10 @@ def main_mpi(plot_it=False, save_it=False):
         if plot_it:
             import matplotlib.pyplot as plt
 
+            type_sim = ""
+            if ip_sim_type is inv_perc_sim_corner:
+                type_sim = "corner"
+
             start = 0.05
             end = 0.30
             N = int((end - start) / start)
@@ -58,7 +62,7 @@ def main_mpi(plot_it=False, save_it=False):
                 plt.title(f"Prob_pres = {p[pi]:.2f}, L = {L}, MCCs = {M}")
                 plt.ylabel("Probability for number of sites invaded")
                 plt.xlabel("Number of sites invaded")
-                plt.savefig(f"dist_p{p[pi]:.2f}.png")
+                plt.savefig(f"dist{type_sim}_{p[pi]:.2f}.png")
                 plt.show()
 
         if save_it:
@@ -66,4 +70,4 @@ def main_mpi(plot_it=False, save_it=False):
 
 
 if __name__ == "__main__":
-    main_mpi(plot_it=True, save_it=False)
+    main_mpi(plot_it=True, save_it=False, ip_sim_type=inv_perc_sim_corner)
