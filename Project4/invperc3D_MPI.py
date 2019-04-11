@@ -62,11 +62,11 @@ def main_mpi(plot_it=False, save_it=False, ip_sim_type=inv_perc_sim):
                 plt.title(f"Prob_pres = {p[pi]:.2f}, L = {L}, MCCs = {M}")
                 plt.ylabel("Probability for number of sites invaded")
                 plt.xlabel("Number of sites invaded")
-                plt.savefig(f"dist{type_sim}_{p[pi]:.2f}.png")
+                plt.savefig(f"results/dist{type_sim}_{p[pi]:.2f}.png")
                 plt.show()
 
         if save_it:
-            np.save("Ns_parallel.npy", Ns_total)
+            np.save("results/Ns_parallel.npy", Ns_total)
 
 
 if __name__ == "__main__":

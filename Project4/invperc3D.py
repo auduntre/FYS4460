@@ -123,7 +123,7 @@ def main(plot_it=False, save_it=False):
             plt.show()
 
     if save_it:
-        np.save("Ns_serial.npy", Ns)
+        np.save("results/Ns_serial.npy", Ns)
 
 
 if __name__ == "__main__":
