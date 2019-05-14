@@ -15,11 +15,32 @@ mass 2 1.0
 pair_style lj/cut 3.0
 pair_coeff * * 1.0 1.0 3.0
 
-region cylinder_cut cylinder x 16.8 16.8 ${radius} EDGE EDGE units box side in
-region cylinder_outside cylinder x 16.8 16.8 ${radius} EDGE EDGE units box side out
+label iloop
+variable idx loop 1 3
+
+variable ypos equal (33.6/3.0)*0.5*${idx}  
+
+label jloop
+variable jdx loop 1 3
+
+variable zpos equal (33.6/3.0)*0.5*${jdx}
+variable regName equal (${idx}-1)*3+${jdx}
+print "${regName}"
+
+region cyin_${regName} cylinder x ${ypos} ${zpos} ${radius} EDGE EDGE units box side in
+region cyout_${regName} cylinder x ${ypos} ${zpos} ${radius} EDGE EDGE units box side out
+
+next jdx
+jump SELF jloop
+
+next idx
+jump SELF iloop
+
+region cylinder_cut union 9 cyin_1 cyin_2 cyin_3 cyin_4 cyin_5 cyin_6 cyin_7 cyin_8 cyin_9
+region cylinder_out intersect 9 cyout_1 cyout_2 cyout_3 cyout_4 cyout_5 cyout_6 cyout_7 cyout_8 cyout_9
 
 group cylinder_atoms region cylinder_cut
-group stationary_atoms region cylinder_outside
+group stationary_atoms region cylinder_out
 
 set group cylinder_atoms type 2
 set group stationary_atoms type 1
