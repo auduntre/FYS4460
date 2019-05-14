@@ -18,12 +18,12 @@ pair_coeff * * 1.0 1.0 3.0
 label iloop
 variable idx loop 1 3
 
-variable ypos equal (33.6/3.0)*0.5*${idx}  
+variable ypos equal (33.6/3.0)*(${idx}-0.5)  
 
 label jloop
 variable jdx loop 1 3
 
-variable zpos equal (33.6/3.0)*0.5*${jdx}
+variable zpos equal (33.6/3.0)*(${jdx}-0.5)
 variable regName equal (${idx}-1)*3+${jdx}
 print "${regName}"
 
@@ -61,7 +61,7 @@ print "--------------  THERMALIZATION DONE ----------------"
 fix 3 cylinder_atoms addforce 0.1 0.0 0.0
 
 variable g atom gmask(cylinder_atoms)
-dump 1 cylinder_atoms custom 100 dump.lammpstrj_${radius} id type x y z vx vy vz
+dump 1 all custom 100 dump.lammpstrj_${radius} id type x y z vx vy vz
 
 thermo 100
 run 50000
